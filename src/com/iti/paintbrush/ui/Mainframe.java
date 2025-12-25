@@ -1,6 +1,6 @@
 package com.iti.paintbrush.ui;
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 public class Mainframe extends JFrame {
     private JButton btnRed, btnGreen, btnBlue;
     private JButton btnOval, btnLine, btnRectangle;
@@ -66,8 +66,8 @@ public class Mainframe extends JFrame {
         toolbar.add(chkFilled);
 
         //Drawing area
-        JPanel drawingArea = new JPanel();
-        drawingArea.setBackground(Color.WHITE);
+
+        DrawingPanel drawingArea = new DrawingPanel();
 
         // Add panels
         this.add(toolbar, BorderLayout.NORTH);
