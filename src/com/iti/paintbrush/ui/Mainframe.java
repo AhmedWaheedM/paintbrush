@@ -2,10 +2,13 @@ package com.iti.paintbrush.ui;
 import java.awt.*;
 import javax.swing.*;
 public class Mainframe extends JFrame {
-    private JButton btnRed, btnGreen, btnBlue;
-    private JButton btnOval, btnLine, btnRectangle;
-    private JButton btnFreeHand, btnEraser, btnClear;
+    private JToggleButton btnRed, btnGreen, btnBlue;
+    private JToggleButton btnOval, btnLine, btnRectangle;
+    private JButton btnFreeHand, btnEraser;
+    private JButton btnSave, btnLoad;
+    private JButton btnUndo, btnRedo, btnClear;
     private JCheckBox chkDotted, chkFilled; 
+
     public Mainframe() {
         // Set up frame properties
         setTitle("Paint Brush - By ITI");
@@ -17,31 +20,46 @@ public class Mainframe extends JFrame {
         toolbar.setBackground(Color.LIGHT_GRAY);
         toolbar.setLayout(new FlowLayout(FlowLayout.LEFT));
         // Initial Color buttons
-        btnBlue = new JButton("Blue");
+        btnBlue = new JToggleButton("Blue");
         btnBlue.setBackground(Color.BLUE);
         btnBlue.setForeground(Color.WHITE);
 
-        btnGreen = new JButton("Green");
+        btnGreen = new JToggleButton("Green");
         btnGreen.setBackground(Color.GREEN);
         btnGreen.setForeground(Color.WHITE);
 
-        btnRed = new JButton("Red");
+        btnRed = new JToggleButton("Red");
         btnRed.setBackground(Color.RED);
         btnRed.setForeground(Color.WHITE);
 
+        ButtonGroup colorGroup = new ButtonGroup();
+        colorGroup.add(btnBlue);
+        colorGroup.add(btnGreen);
+        colorGroup.add(btnRed);
+
         // Initial Shape buttons
-        btnOval = new JButton("Oval");
-        btnLine = new JButton("Line");
-        btnRectangle = new JButton("Rectangle");
+        btnOval = new JToggleButton("Oval");
+        btnLine = new JToggleButton("Line");
+        btnRectangle = new JToggleButton("Rectangle");
+
+        ButtonGroup shapeGroup = new ButtonGroup();
+        shapeGroup.add(btnOval);    
+        shapeGroup.add(btnLine);
+        shapeGroup.add(btnRectangle);
 
         // Initial Action buttons
         btnFreeHand = new JButton("Free Hand");
         btnEraser = new JButton("Eraser");
         btnClear = new JButton("Clear");
-
+        btnSave = new JButton("Save");
+        btnLoad = new JButton("Load");
+        btnUndo = new JButton("Undo");
+        btnRedo = new JButton("Redo");
         // Checkboxes
         chkDotted = new JCheckBox("Dotted");
+        chkDotted.setOpaque(false);
         chkFilled = new JCheckBox("Filled");
+        chkFilled.setOpaque(false);
 
         // Add to toolbar
         toolbar.add(new JLabel("Colors: "));
@@ -62,8 +80,16 @@ public class Mainframe extends JFrame {
         toolbar.add(btnFreeHand);
         toolbar.add(btnEraser);
         toolbar.add(btnClear);
+        toolbar.add(btnUndo);
+        toolbar.add(btnRedo);
         toolbar.add(chkDotted);
         toolbar.add(chkFilled);
+
+        toolbar.add(new JSeparator(SwingConstants.VERTICAL));
+
+        toolbar.add(new JLabel("File: "));
+        toolbar.add(btnSave);
+        toolbar.add(btnLoad);
 
         //Drawing area
 

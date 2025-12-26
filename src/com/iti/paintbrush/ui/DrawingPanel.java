@@ -13,12 +13,14 @@ import javax.swing.JPanel;
 public class DrawingPanel extends JPanel {
 
     private ArrayList<Drawable> shapes; // List to store drawn shapes made with Drawable interface for adding JPEGs or any none shape later
+    private ArrayList<Drawable> removedShapes; // For redo functionality
     private Shape currentShape; // Shape being currently drawn
     private Color currentColor; 
     private String currentMode; // e.g., "Rectangle", "Oval", etc. aka user selected shape via toolbar
 
     public DrawingPanel() {
         shapes = new ArrayList<>();
+        removedShapes = new ArrayList<>();
         currentColor = Color.RED; //! static for now
         currentMode = "Rectangle"; //! static for now
         setBackground(Color.WHITE);
