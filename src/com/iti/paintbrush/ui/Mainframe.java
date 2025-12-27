@@ -1,103 +1,152 @@
 package com.iti.paintbrush.ui;
-import java.awt.*;
+
+import com.iti.paintbrush.enums.ShapeMode;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
+import java.io.File;
+
 public class Mainframe extends JFrame {
-    private JToggleButton btnRed, btnGreen, btnBlue;
-    private JToggleButton btnOval, btnLine, btnRectangle;
-    private JButton btnFreeHand, btnEraser;
-    private JButton btnSave, btnLoad;
-    private JButton btnUndo, btnRedo, btnClear;
-    private JCheckBox chkDotted, chkFilled; 
+
+    private DrawingPanel drawingPanel;
+    private JFileChooser fileChooser;
 
     public Mainframe() {
-        // Set up frame properties
+        // 1. Frame Setup
         setTitle("Paint Brush - By ITI");
         setSize(1000, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        // toolbar panel
-        JPanel toolbar = new JPanel();
+        
+        // 2. Initialize Components
+        drawingPanel = new DrawingPanel();
+        fileChooser = new JFileChooser();
+
+        // 3. Build UI using Helper Methods
+        JPanel toolbar = createToolbar();
+        JMenuBar menuBar = createMenuBar();
+
+        // 4. Add to Frame
+        this.setJMenuBar(menuBar);
+        this.add(toolbar, BorderLayout.NORTH);
+        this.add(drawingPanel, BorderLayout.CENTER);
+    }
+
+    // --- Helper: Build the Toolbar ---
+    private JPanel createToolbar() {
+        JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
         toolbar.setBackground(Color.LIGHT_GRAY);
-        toolbar.setLayout(new FlowLayout(FlowLayout.LEFT));
-        // Initial Color buttons
-        btnBlue = new JToggleButton("Blue");
-        btnBlue.setBackground(Color.BLUE);
-        btnBlue.setForeground(Color.WHITE);
 
-        btnGreen = new JToggleButton("Green");
-        btnGreen.setBackground(Color.GREEN);
-        btnGreen.setForeground(Color.WHITE);
-
-        btnRed = new JToggleButton("Red");
-        btnRed.setBackground(Color.RED);
-        btnRed.setForeground(Color.WHITE);
-
-        ButtonGroup colorGroup = new ButtonGroup();
-        colorGroup.add(btnBlue);
-        colorGroup.add(btnGreen);
-        colorGroup.add(btnRed);
-
-        // Initial Shape buttons
-        btnOval = new JToggleButton("Oval");
-        btnLine = new JToggleButton("Line");
-        btnRectangle = new JToggleButton("Rectangle");
-
-        ButtonGroup shapeGroup = new ButtonGroup();
-        shapeGroup.add(btnOval);    
-        shapeGroup.add(btnLine);
-        shapeGroup.add(btnRectangle);
-
-        // Initial Action buttons
-        btnFreeHand = new JButton("Free Hand");
-        btnEraser = new JButton("Eraser");
-        btnClear = new JButton("Clear");
-        btnSave = new JButton("Save");
-        btnLoad = new JButton("Load");
-        btnUndo = new JButton("Undo");
-        btnRedo = new JButton("Redo");
-        // Checkboxes
-        chkDotted = new JCheckBox("Dotted");
-        chkDotted.setOpaque(false);
-        chkFilled = new JCheckBox("Filled");
-        chkFilled.setOpaque(false);
-
-        // Add to toolbar
+        // -- Colors --
         toolbar.add(new JLabel("Colors: "));
-        toolbar.add(btnRed);
-        toolbar.add(btnGreen);
-        toolbar.add(btnBlue);
-
+        toolbar.add(createColorButton("Red", Color.RED));
+        toolbar.add(createColorButton("Green", Color.GREEN));
+        toolbar.add(createColorButton("Blue", Color.BLUE));
         toolbar.add(new JSeparator(SwingConstants.VERTICAL));
 
+        // -- Shapes --
         toolbar.add(new JLabel("Shapes: "));
-        toolbar.add(btnOval);
-        toolbar.add(btnLine);
-        toolbar.add(btnRectangle);
-
+        ButtonGroup shapeGroup = new ButtonGroup(); // Ensures only one shape is active
+        toolbar.add(createShapeButton("Rect", ShapeMode.RECTANGLE, shapeGroup));
+        toolbar.add(createShapeButton("Oval", ShapeMode.OVAL, shapeGroup));
+        toolbar.add(createShapeButton("Line", ShapeMode.LINE, shapeGroup));
+        toolbar.add(createShapeButton("Square", ShapeMode.SQUARE, shapeGroup));
+        toolbar.add(createShapeButton("Circle", ShapeMode.CIRCLE, shapeGroup));
         toolbar.add(new JSeparator(SwingConstants.VERTICAL));
 
-        toolbar.add(new JLabel("Actions: "));
-        toolbar.add(btnFreeHand);
-        toolbar.add(btnEraser);
-        toolbar.add(btnClear);
+        // -- Actions --
+        JButton btnClear = new JButton("Clear");
+        JButton btnReset = new JButton("Reset");
+        JButton btnUndo = new JButton("Undo");
+        JButton btnRedo = new JButton("Redo");
+
+        btnClear.addActionListener(e -> drawingPanel.clearAll()); // Assuming you renamed ClearAll -> clearAll
+        btnReset.addActionListener(e -> drawingPanel.reset());
+        btnUndo.addActionListener(e -> drawingPanel.undo());
+        btnRedo.addActionListener(e -> drawingPanel.redo());
+
         toolbar.add(btnUndo);
         toolbar.add(btnRedo);
-        toolbar.add(chkDotted);
-        toolbar.add(chkFilled);
+        toolbar.add(btnClear);
+        toolbar.add(btnReset);
 
-        toolbar.add(new JSeparator(SwingConstants.VERTICAL));
+        return toolbar;
+    }
 
-        toolbar.add(new JLabel("File: "));
-        toolbar.add(btnSave);
-        toolbar.add(btnLoad);
+    // --- Helper: Build the Menu Bar ---
+    private JMenuBar createMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+        JMenu fileMenu = new JMenu("File");
 
-        //Drawing area
+        JMenuItem saveItem = new JMenuItem("Save Project");
+        JMenuItem loadItem = new JMenuItem("Load Project");
+        JMenuItem exportItem = new JMenuItem("Export to JPG");
+        JMenuItem importItem = new JMenuItem("Import Background");
 
-        DrawingPanel drawingArea = new DrawingPanel();
+        // Save Project Action
+        saveItem.addActionListener(e -> {
+            if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                try {
+                    drawingPanel.saveProject(fileChooser.getSelectedFile());
+                } catch (Exception ex) { ex.printStackTrace(); }
+            }
+        });
 
-        // Add panels
-        this.add(toolbar, BorderLayout.NORTH);
-        this.add(drawingArea, BorderLayout.CENTER);
-        
+        // Load Project Action
+        loadItem.addActionListener(e -> {
+            if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                try {
+                    drawingPanel.loadProject(fileChooser.getSelectedFile());
+                } catch (Exception ex) { ex.printStackTrace(); }
+            }
+        });
+
+        // Export Image Action
+        exportItem.addActionListener(e -> {
+            if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                try {
+                    drawingPanel.exportImage(fileChooser.getSelectedFile());
+                } catch (Exception ex) { ex.printStackTrace(); }
+            }
+        });
+
+        // Import Image Action
+        importItem.addActionListener(e -> {
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Images", "jpg", "png", "gif"));
+            if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                try {
+                    drawingPanel.importImage(fileChooser.getSelectedFile());
+                } catch (Exception ex) { 
+                    JOptionPane.showMessageDialog(this, "Error loading image"); 
+                }
+            }
+            fileChooser.resetChoosableFileFilters(); // Reset filter after use
+        });
+
+        fileMenu.add(saveItem);
+        fileMenu.add(loadItem);
+        fileMenu.addSeparator();
+        fileMenu.add(exportItem);
+        fileMenu.add(importItem);
+        menuBar.add(fileMenu);
+
+        return menuBar;
+    }
+
+    // --- Helper: Create a Color Button ---
+    private JToggleButton createColorButton(String name, Color color) {
+        JToggleButton btn = new JToggleButton(name);
+        btn.setBackground(color);
+        btn.setForeground(Color.WHITE);
+        btn.addActionListener(e -> drawingPanel.setCurrentColor(color));
+        return btn;
+    }
+
+    // --- Helper: Create a Shape Button ---
+    private JToggleButton createShapeButton(String name, ShapeMode mode, ButtonGroup group) {
+        JToggleButton btn = new JToggleButton(name);
+        btn.addActionListener(e -> drawingPanel.setCurrentMode(mode));
+        group.add(btn); // Add to group so they toggle exclusively
+        return btn;
     }
 }
