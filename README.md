@@ -36,7 +36,7 @@ You can click and drag to draw a Red Rectangle. The shape stays on the screen af
 
 ---
 
-### Day 3: Architecture, Shapes & Tools (The "Pro" Update)
+### Day 3: Architecture, Shapes & Tools (The "Bonus" Update)
 
 We moved from a simple prototype to a professionally architected application.
 
