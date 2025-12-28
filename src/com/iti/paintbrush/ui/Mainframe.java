@@ -1,10 +1,9 @@
 package com.iti.paintbrush.ui;
 
 import com.iti.paintbrush.enums.ShapeMode;
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
-import java.io.File;
 
 public class Mainframe extends JFrame {
 
@@ -14,7 +13,7 @@ public class Mainframe extends JFrame {
     public Mainframe() {
         // 1. Frame Setup
         setTitle("Paint Brush - By ITI");
-        setSize(1000, 600);
+        setSize(1250, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         
@@ -39,22 +38,28 @@ public class Mainframe extends JFrame {
 
         // -- Colors --
         toolbar.add(new JLabel("Colors: "));
-        toolbar.add(createColorButton("Red", Color.RED));
-        toolbar.add(createColorButton("Green", Color.GREEN));
-        toolbar.add(createColorButton("Blue", Color.BLUE));
+        ButtonGroup ColorGroup = new ButtonGroup(); // Ensures only one color is active
+        toolbar.add(createColorButton("Red", Color.RED, ColorGroup));
+        toolbar.add(createColorButton("Green", Color.GREEN, ColorGroup));
+        toolbar.add(createColorButton("Blue", Color.BLUE, ColorGroup));
         toolbar.add(new JSeparator(SwingConstants.VERTICAL));
 
         // -- Shapes --
         toolbar.add(new JLabel("Shapes: "));
         ButtonGroup shapeGroup = new ButtonGroup(); // Ensures only one shape is active
-        toolbar.add(createShapeButton("Rect", ShapeMode.RECTANGLE, shapeGroup));
-        toolbar.add(createShapeButton("Oval", ShapeMode.OVAL, shapeGroup));
-        toolbar.add(createShapeButton("Line", ShapeMode.LINE, shapeGroup));
+        toolbar.add(createShapeButton(" Rect ", ShapeMode.RECTANGLE, shapeGroup));
+        toolbar.add(createShapeButton(" Oval ", ShapeMode.OVAL, shapeGroup));
+        toolbar.add(createShapeButton(" Line ", ShapeMode.LINE, shapeGroup));
         toolbar.add(createShapeButton("Square", ShapeMode.SQUARE, shapeGroup));
         toolbar.add(createShapeButton("Circle", ShapeMode.CIRCLE, shapeGroup));
+        toolbar.add(createShapeButton("Pencil", ShapeMode.FREE_HAND, shapeGroup));
+        toolbar.add(createShapeButton("Eraser", ShapeMode.ERASER, shapeGroup));
+        toolbar.add(new JSeparator(SwingConstants.VERTICAL));
+        toolbar.add(new JSeparator(SwingConstants.VERTICAL));
         toolbar.add(new JSeparator(SwingConstants.VERTICAL));
 
         // -- Actions --
+        toolbar.add(new JLabel("Actions: "));
         JButton btnClear = new JButton("Clear");
         JButton btnReset = new JButton("Reset");
         JButton btnUndo = new JButton("Undo");
@@ -134,13 +139,14 @@ public class Mainframe extends JFrame {
     }
 
     // --- Helper: Create a Color Button ---
-    private JToggleButton createColorButton(String name, Color color) {
-        JToggleButton btn = new JToggleButton(name);
-        btn.setBackground(color);
-        btn.setForeground(Color.WHITE);
-        btn.addActionListener(e -> drawingPanel.setCurrentColor(color));
-        return btn;
-    }
+    private JToggleButton createColorButton(String name, Color color, ButtonGroup group) {
+    JToggleButton btn = new JToggleButton(name);
+    btn.setBackground(color);
+    btn.setForeground(Color.WHITE);
+    btn.addActionListener(e -> drawingPanel.setCurrentColor(color));
+    group.add(btn); 
+    return btn;
+}
 
     // --- Helper: Create a Shape Button ---
     private JToggleButton createShapeButton(String name, ShapeMode mode, ButtonGroup group) {

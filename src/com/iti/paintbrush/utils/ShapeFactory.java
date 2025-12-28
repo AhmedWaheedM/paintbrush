@@ -12,6 +12,8 @@ public class ShapeFactory {
             case OVAL      -> new Oval(x, y, x, y, color);
             case CIRCLE    -> new Circle(x, y, x, y, color);
             case LINE      -> new Line(x, y, x, y, color);
+            case FREE_HAND -> new FreeHand(color);
+            case ERASER -> new Eraser();
             default        -> null; 
         };
     }
