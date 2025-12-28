@@ -2,6 +2,7 @@ package com.iti.paintbrush.ui;
 
 import com.iti.paintbrush.enums.ShapeMode;
 import com.iti.paintbrush.interfaces.Drawable;
+import com.iti.paintbrush.shapes.*;
 import com.iti.paintbrush.shapes.Shape;
 import com.iti.paintbrush.utils.FileUtils;
 import com.iti.paintbrush.utils.ShapeFactory;
@@ -30,7 +31,7 @@ public class DrawingPanel extends JPanel {
         shapes = new ArrayList<>();
         removedShapes = new ArrayList<>();
         currentColor = Color.RED;
-        currentMode = ShapeMode.CIRCLE; // Default
+        currentMode = ShapeMode.FREE_HAND; // Change default to FREE_HAND
         setBackground(Color.WHITE);
 
         MouseHandler handler = new MouseHandler();
@@ -133,16 +134,38 @@ public class DrawingPanel extends JPanel {
     private class MouseHandler extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
-            // Using the Factory Pattern!
-            currentShape = ShapeFactory.createShape(currentMode, e.getX(), e.getY(), currentColor);
-            repaint();
+            if (currentMode == ShapeMode.FREE_HAND) {
+                
+                currentShape = new FreeHand(currentColor);
+                ((FreeHand) currentShape).addPoint(e.getX(), e.getY());
+                shapes.add(currentShape); // Add to shapes immediately
+            }
+            else if (currentMode == ShapeMode.ERASER) {
+                
+                currentShape = new Eraser();
+                ((Eraser) currentShape).addPoint(e.getX(), e.getY());
+                shapes.add(currentShape); // Add to shapes immediately
+            } 
+            else {
+                // Using the Factory Pattern for other shapes
+                currentShape = ShapeFactory.createShape(currentMode, e.getX(), e.getY(), currentColor);
+            }
         }
 
         @Override
         public void mouseDragged(MouseEvent e) {
+            
             if (currentShape != null) {
-                currentShape.setX2(e.getX());
-                currentShape.setY2(e.getY());
+                if (currentMode == ShapeMode.FREE_HAND) {
+                    ((FreeHand) currentShape).addPoint(e.getX(), e.getY());
+                } 
+                else if (currentMode == ShapeMode.ERASER) {
+                    ((Eraser) currentShape).addPoint(e.getX(), e.getY());
+                }
+                else{
+                    currentShape.setX2(e.getX());
+                    currentShape.setY2(e.getY());
+                }
                 repaint();
             }
         }
@@ -150,9 +173,20 @@ public class DrawingPanel extends JPanel {
         @Override
         public void mouseReleased(MouseEvent e) {
             if (currentShape != null) {
-                currentShape.setX2(e.getX());
-                currentShape.setY2(e.getY());
-                shapes.add(currentShape);
+                if (currentMode == ShapeMode.FREE_HAND) {
+                    
+                    ((FreeHand) currentShape).addPoint(e.getX(), e.getY());
+                }
+                else if (currentMode == ShapeMode.ERASER) {
+                    
+                    ((Eraser) currentShape).addPoint(e.getX(), e.getY());
+                } 
+                else {
+                    
+                    currentShape.setX2(e.getX());
+                    currentShape.setY2(e.getY());
+                    shapes.add(currentShape);
+                }
                 currentShape = null;
                 repaint();
             }

@@ -60,10 +60,30 @@ We moved from a simple prototype to a professionally architected application.
 
 ---
 
-### TODO: (Next Steps for Day 4)
+### Day 4: Architecture, UI and Shapes  (The "Bonus" Update)
 
-- **[ ] Free Hand Mode:** Implement the logic to draw continuous lines (Pencil tool).
-- **[ ] Eraser Mode:** Implement logic to "erase" (either by drawing white lines or removing objects).
+
+**- Arhcitecture**
+- **ShapeFactory:** now contains Eraser and FreeHand
+
+**- UI**
+- **Colors** Now the colors are grouped in a button Group, only one color is highlighted at atime.
+- **Shaoes** added new shapes (Pencil, and Eraser), added separator
+- **Actions** added a label before the actions
+
+
+**- New Shapes**
+
+- **Draw Line:** - included an ArrayList of integer lists that store points. - lines are drawn between the points - ovals are also drawn (under consideration to remove, thickness is static)
+
+- **Eraser:** included an ArrayList of integer lists that store points. - uses white color statically - lines are drawn between the points (defualt thickness because we are using draw not draw2d) - ovals are also drawn (under consideration to remove, thickness is static)
+
+
+---
+
+### TODO: (Next Steps for Day 4)
 - **[ ] Styling:** Connect the "Filled" and "Dotted" checkboxes to the `draw()` logic in the Shape classes.
 - **[ ] UI Polish:** "El UI shaklo 3efesh." Improve the button layout, maybe add icons or a better color scheme.
 - **[ ] Testing:** Try to break the app and fix any small bugs found.
+- **[ ] Add dotted and solid:** add functionality of dotted and solid
+- **[ ] Add filled shape** add a filled shape button
