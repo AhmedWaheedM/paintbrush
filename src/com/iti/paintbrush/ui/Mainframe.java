@@ -50,7 +50,7 @@ public class Mainframe extends JFrame {
         JButton btnReset = new JButton("Reset");
 
 
-        btnClear.addActionListener(e -> drawingPanel.clearAll()); // Assuming you renamed ClearAll -> clearAll
+        btnClear.addActionListener(e -> drawingPanel.clearAll()); 
         btnReset.addActionListener(e -> drawingPanel.reset());
         btnUndo.addActionListener(e -> drawingPanel.undo());
         btnRedo.addActionListener(e -> drawingPanel.redo());
@@ -72,6 +72,7 @@ public class Mainframe extends JFrame {
         JToggleButton blackBtn = createColorButton("", Color.BLACK, colorGroup);
         toolsRow.add(blackBtn);
         blackBtn.setSelected(true);  // Default selection
+
         blackBtn.setBorder(BorderFactory.createLineBorder(Color.CYAN, 4)); 
         toolsRow.add(createColorButton("", Color.GRAY, colorGroup));
         toolsRow.add(createColorButton("", Color.WHITE, colorGroup));
@@ -91,6 +92,8 @@ public class Mainframe extends JFrame {
         JToggleButton pencilBtn = createShapeButton("\u270E", "Pencil", ShapeMode.FREE_HAND, shapeGroup);
         toolsRow.add(pencilBtn);
         pencilBtn.setSelected(true); //default start
+
+        // using unicode characters to insert shapes
         toolsRow.add(createShapeButton("\u2572", "Line", ShapeMode.LINE, shapeGroup));
         toolsRow.add(createShapeButton("\u25AD", "Rectangle", ShapeMode.RECTANGLE, shapeGroup));
         toolsRow.add(createShapeButton("\u25A1", "Square", ShapeMode.SQUARE, shapeGroup));
@@ -100,8 +103,7 @@ public class Mainframe extends JFrame {
         toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
         toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
 
-        // line type
-        // -- Draw Modes --
+        // -- Draw Modes -- (for line types )
         toolsRow.add(new JLabel("Mode:"));
         
         // Mutually exclusive checkboxes for Solid, Dotted, and Filled
