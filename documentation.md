@@ -1,9 +1,11 @@
 # Paint Brush Application - Complete Documentation
 
 ## Project Overview
+
 **Paint Brush** is a Java-based desktop drawing application developed for ITI (Information Technology Institute). It provides a comprehensive set of drawing tools similar to Microsoft Paint, allowing users to create, edit, and save digital artwork with various shapes, colors, and drawing modes.
 
 ## Table of Contents
+
 1. [Architecture](#architecture)
 2. [Core Components](#core-components)
 3. [Features](#features)
@@ -25,6 +27,7 @@ The application follows a **Model-View-Controller (MVC)** inspired architecture 
 - **Utility Layer**: Helper classes for object creation and file operations
 
 ### Technology Stack
+
 - **Language**: Java 17
 - **GUI Framework**: Java Swing
 - **Graphics**: Java AWT Graphics API
@@ -35,13 +38,17 @@ The application follows a **Model-View-Controller (MVC)** inspired architecture 
 ## Core Components
 
 ### 1. Main Application Entry Point
+
 **Class**: `PaintBrushApp`
+
 - Located in: `com.iti.paintbrush.main`
 - Initializes the application window
 - Sets up the main frame and displays the GUI
 
 ### 2. Main Window (Mainframe)
+
 **Class**: `Mainframe` extends `JFrame`
+
 - **Location**: `com.iti.paintbrush.ui`
 - **Dimensions**: 1350x600 pixels
 - **Responsibilities**:
@@ -51,12 +58,15 @@ The application follows a **Model-View-Controller (MVC)** inspired architecture 
   - Manages user interface state and interactions
 
 **Key UI Elements**:
+
 - **Actions Row**: Undo, Redo, Clear, Reset buttons
 - **Tools Row**: Contains color palette, shape selection, draw modes, and thickness slider
 - **Menu Bar**: File operations (Save, Load, Export, Import)
 
 ### 3. Drawing Panel
+
 **Class**: `DrawingPanel` extends `JPanel`
+
 - **Location**: `com.iti.paintbrush.ui`
 - **Responsibilities**:
   - Handles all mouse events (press, drag, release)
@@ -66,6 +76,7 @@ The application follows a **Model-View-Controller (MVC)** inspired architecture 
   - Implements undo/redo functionality
 
 **State Management**:
+
 - `shapes`: ArrayList of all drawn shapes (active drawing history)
 - `removedShapes`: ArrayList for redo functionality
 - `backupShapes`: Backup for reset/undo operations
@@ -79,10 +90,12 @@ The application follows a **Model-View-Controller (MVC)** inspired architecture 
 ### 4. Shape Hierarchy
 
 **Base Interface**: `Drawable`
+
 - Location: `com.iti.paintbrush.interfaces`
 - Method: `void draw(Graphics g)`
 
 **Abstract Base Class**: `Shape` implements `Drawable`, `Serializable`
+
 - **Location**: `com.iti.paintbrush.shapes`
 - **Common Properties**:
   - `x1, y1`: Starting coordinates
@@ -94,26 +107,32 @@ The application follows a **Model-View-Controller (MVC)** inspired architecture 
 **Concrete Shape Classes**:
 
 1. **Line**: Draws straight lines
+
    - Supports solid and dotted modes
    - Uses `drawLine()` for solid, custom dotted implementation
 
 2. **Rectangle**: Draws rectangles
+
    - Supports solid, dotted, and filled modes
    - Uses `drawRect()` and `fillRect()`
 
 3. **Square**: Draws perfect squares
+
    - Calculates equal width/height from drag distance
    - Supports all draw modes
 
 4. **Oval**: Draws ellipses
+
    - Uses `drawOval()` and `fillOval()`
    - Supports all draw modes
 
 5. **Circle**: Draws perfect circles
+
    - Calculates radius from drag distance
    - Supports all draw modes
 
 6. **FreeHand**: Freehand drawing (pencil tool)
+
    - Stores multiple points as an ArrayList
    - Connects points with lines
    - Supports solid and dotted drawing
@@ -127,6 +146,7 @@ The application follows a **Model-View-Controller (MVC)** inspired architecture 
 ## Features
 
 ### Drawing Tools
+
 1. **Pencil (Free Hand)**: Draw freeform lines by dragging
 2. **Line**: Draw straight lines
 3. **Rectangle**: Draw rectangles
@@ -136,11 +156,13 @@ The application follows a **Model-View-Controller (MVC)** inspired architecture 
 7. **Eraser**: Erase parts of the drawing
 
 ### Drawing Modes (Mutually Exclusive Checkboxes)
+
 1. **Solid**: Standard solid lines/outlines (default)
 2. **Dotted**: Dashed/dotted line style
 3. **Filled**: Fill shapes with solid color
 
 ### Color Palette
+
 - **8 Colors Available**:
   - Black (default)
   - Gray
@@ -153,11 +175,13 @@ The application follows a **Model-View-Controller (MVC)** inspired architecture 
 - Visual feedback with cyan border on selected color
 
 ### Thickness Control
+
 - **Slider Range**: 1 to 11 pixels
 - **Default**: 2 pixels
 - Applies to all shapes and lines
 
 ### Action Buttons
+
 1. **Undo**: Remove the last drawn shape
 2. **Redo**: Restore the last undone shape
 3. **Clear**: Remove all shapes but keep background image
@@ -166,15 +190,19 @@ The application follows a **Model-View-Controller (MVC)** inspired architecture 
 ### File Operations
 
 **Menu Bar → File**:
+
 1. **Save Project**: Serialize and save drawing to file
+
    - Saves all shapes as Java objects
    - File extension: `.paintbrush` or custom
 
 2. **Load Project**: Load a previously saved project
+
    - Deserializes shapes from file
    - Restores entire drawing session
 
 3. **Export to JPG**: Export drawing as image
+
    - Saves current canvas as JPG image
    - Resolution matches canvas size
 
@@ -187,7 +215,9 @@ The application follows a **Model-View-Controller (MVC)** inspired architecture 
 ## Design Patterns
 
 ### 1. Factory Pattern
+
 **Class**: `ShapeFactory`
+
 - **Location**: `com.iti.paintbrush.utils`
 - **Purpose**: Centralized shape object creation
 - **Method**: `createShape(ShapeMode mode, int x, int y, Color color, int thick, DrawMode drawMode)`
@@ -197,17 +227,21 @@ The application follows a **Model-View-Controller (MVC)** inspired architecture 
   - Reduces coupling between UI and shape classes
 
 ### 2. Strategy Pattern
+
 **Enumerations**:
+
 - `DrawMode`: SOLID, DOTTED, FILLED
 - `ShapeMode`: FREE_HAND, LINE, RECTANGLE, SQUARE, OVAL, CIRCLE, ERASER
 - **Purpose**: Encapsulate drawing algorithms and behaviors
 - Allows runtime switching of drawing strategies
 
 ### 3. Singleton-like Pattern
+
 - `DrawingPanel` maintains single instance via Mainframe
 - Ensures consistent state management
 
 ### 4. Observer Pattern (Implicit)
+
 - Mouse event listeners observe user interactions
 - Action listeners respond to button clicks
 - Item listeners monitor checkbox state changes
@@ -247,6 +281,7 @@ com.iti.paintbrush
 ## User Interface
 
 ### Layout Structure
+
 ```
 ┌─────────────────────────────────────────────────┐
 │  File Menu                                      │
@@ -268,29 +303,34 @@ com.iti.paintbrush
 ### UI Components
 
 **Toolbar Container**:
+
 - **Layout**: BoxLayout (vertical)
 - **Background**: Light gray
 - **Contains**: Two rows (actions row + tools row)
 
 **Color Buttons**:
+
 - **Type**: JToggleButton with ButtonGroup
 - **Size**: 30x30 pixels
 - **Visual Feedback**: Cyan border (4px) on selection, gray border (1px) otherwise
 - **Selection**: Mutually exclusive via ButtonGroup
 
 **Shape Buttons**:
+
 - **Type**: JToggleButton with Unicode symbols
 - **Font**: Segoe UI Symbol (20pt)
 - **Tooltips**: Descriptive names on hover
 - **Selection**: Mutually exclusive via ButtonGroup
 
 **Draw Mode Checkboxes**:
+
 - **Type**: JCheckBox (3 checkboxes)
 - **Options**: Solid, Dotted, Filled
 - **Behavior**: Mutually exclusive via custom ItemListeners
 - **Default**: Solid selected
 
 **Thickness Slider**:
+
 - **Type**: JSlider
 - **Range**: 1-11
 - **Default**: 2
@@ -302,21 +342,27 @@ com.iti.paintbrush
 ## File Operations
 
 ### Save Project
+
 **Functionality**: Serializes all shapes to disk
+
 - **Method**: `FileUtils.saveProject(File file, ArrayList<Drawable> shapes)`
 - **Format**: Binary serialization (Java ObjectOutputStream)
 - **What's Saved**: All shape objects with their properties
 - **File Dialog**: Standard JFileChooser save dialog
 
 ### Load Project
+
 **Functionality**: Deserializes shapes from disk
+
 - **Method**: `FileUtils.loadProject(File file)`
 - **Returns**: `ArrayList<Drawable>`
 - **Side Effects**: Clears current drawing and redo history
 - **File Dialog**: Standard JFileChooser open dialog
 
 ### Export Image
+
 **Functionality**: Exports canvas as JPG image
+
 - **Method**: `FileUtils.exportImage(File file, JPanel panel)`
 - **Process**:
   1. Creates BufferedImage of panel size
@@ -325,7 +371,9 @@ com.iti.paintbrush
 - **Resolution**: Matches current canvas dimensions (1350x600 default)
 
 ### Import Background
+
 **Functionality**: Loads image as canvas background
+
 - **Method**: `ImageIO.read(File file)`
 - **Supported Formats**: JPG, PNG, GIF
 - **Behavior**: Image is scaled to fit canvas
@@ -336,6 +384,7 @@ com.iti.paintbrush
 ## How It Works
 
 ### Application Startup Flow
+
 1. **Main Method** → `PaintBrushApp.main()`
 2. **Create Frame** → `new Mainframe()`
 3. **Initialize Components**:
@@ -351,6 +400,7 @@ com.iti.paintbrush
 ### Drawing Workflow
 
 #### 1. Mouse Pressed
+
 ```
 User clicks → mousePressed() event
 ↓
@@ -367,6 +417,7 @@ Else:
 ```
 
 #### 2. Mouse Dragged
+
 ```
 User drags → mouseDragged() event
 ↓
@@ -379,6 +430,7 @@ repaint() → triggers paintComponent()
 ```
 
 #### 3. Mouse Released
+
 ```
 User releases → mouseReleased() event
 ↓
@@ -396,6 +448,7 @@ repaint()
 ### Rendering Pipeline
 
 **paintComponent(Graphics g)** executes in order:
+
 1. **Clear Background**: `super.paintComponent(g)` - paints white background
 2. **Draw Background Image**: If exists, stretch to canvas size
 3. **Draw History**: Loop through all shapes in `shapes` list and call `draw(g)`
@@ -404,6 +457,7 @@ repaint()
 ### Undo/Redo Mechanism
 
 **Undo**:
+
 ```
 User clicks Undo
 ↓
@@ -418,6 +472,7 @@ repaint()
 ```
 
 **Redo**:
+
 ```
 User clicks Redo
 ↓
@@ -431,12 +486,14 @@ repaint()
 ### Clear vs Reset
 
 **Clear**:
+
 - Backs up current shapes to backupShapes
 - Clears shapes list
 - Clears redo history
 - **Keeps** background image
 
 **Reset**:
+
 - Backs up shapes and background image
 - Clears everything (shapes, redo, background)
 - Complete fresh start
@@ -445,6 +502,7 @@ repaint()
 ### State Management
 
 **Color Selection**:
+
 ```
 User clicks color button
 ↓
@@ -458,6 +516,7 @@ Future shapes use new color
 ```
 
 **Shape Selection**:
+
 ```
 User clicks shape button
 ↓
@@ -471,6 +530,7 @@ Next mouse press creates selected shape type
 ```
 
 **Draw Mode Selection**:
+
 ```
 User checks a draw mode checkbox
 ↓
@@ -484,6 +544,7 @@ Future shapes use new draw mode
 ```
 
 **Thickness Selection**:
+
 ```
 User moves thickness slider
 ↓
@@ -499,6 +560,7 @@ Future shapes use new thickness
 ## Key Implementation Details
 
 ### Mutually Exclusive Checkboxes
+
 ```java
 // Custom mutual exclusivity without ButtonGroup
 solidCheckbox.addItemListener(e -> {
@@ -509,21 +571,23 @@ solidCheckbox.addItemListener(e -> {
     }
 });
 ```
+
 - Each checkbox manually unchecks the others when selected
 - Allows checkbox UI while maintaining radio button behavior
 - More intuitive for users than toggle buttons
 
 ### Dotted Line Implementation
+
 ```java
 // Custom dotted line drawing
 if (drawMode == DrawMode.DOTTED) {
     float[] dash = {10, 5};  // 10px line, 5px gap
     BasicStroke dashedStroke = new BasicStroke(
-        thick, 
-        BasicStroke.CAP_BUTT, 
+        thick,
+        BasicStroke.CAP_BUTT,
         BasicStroke.JOIN_MITER,
-        10.0f, 
-        dash, 
+        10.0f,
+        dash,
         0.0f
     );
     ((Graphics2D) g).setStroke(dashedStroke);
@@ -531,6 +595,7 @@ if (drawMode == DrawMode.DOTTED) {
 ```
 
 ### Shape Factory Usage
+
 ```java
 // Centralized shape creation
 currentShape = ShapeFactory.createShape(
