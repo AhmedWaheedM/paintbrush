@@ -78,12 +78,19 @@ We moved from a simple prototype to a professionally architected application.
 
 - **Eraser:** included an ArrayList of integer lists that store points. - uses white color statically - lines are drawn between the points (defualt thickness because we are using draw not draw2d) - ovals are also drawn (under consideration to remove, thickness is static)
 
+---
 
+### Day 5: Architecture, UI and Shapes  (The "Bonus" Update)
+
+**- Arhcitecture**
+- **Colors:** now contains Black and white, new buttons actions
+
+**- UI**
+- **Colors** changed color buttons, Now the colors buttons have an outline when pressed instead of the regular color
 ---
 
 ### TODO: (Next Steps for Day 4)
-- **[ ] Styling:** Connect the "Filled" and "Dotted" checkboxes to the `draw()` logic in the Shape classes.
 - **[ ] UI Polish:** "El UI shaklo 3efesh." Improve the button layout, maybe add icons or a better color scheme.
 - **[ ] Testing:** Try to break the app and fix any small bugs found.
 - **[ ] Add dotted and solid:** add functionality of dotted and solid
-- **[ ] Add filled shape** add a filled shape button
+- **[ ] Styling:** Connect the "Filled" and "Dotted" checkboxes to the `draw()` logic in the Shape classes.

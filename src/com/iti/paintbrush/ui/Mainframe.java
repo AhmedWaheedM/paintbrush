@@ -38,10 +38,13 @@ public class Mainframe extends JFrame {
 
         // -- Colors --
         toolbar.add(new JLabel("Colors: "));
-        ButtonGroup ColorGroup = new ButtonGroup(); // Ensures only one color is active
-        toolbar.add(createColorButton("Red", Color.RED, ColorGroup));
-        toolbar.add(createColorButton("Green", Color.GREEN, ColorGroup));
-        toolbar.add(createColorButton("Blue", Color.BLUE, ColorGroup));
+        ButtonGroup colorGroup = new ButtonGroup(); // Ensures only one color is active
+        toolbar.add(createColorButton("", Color.WHITE, colorGroup));
+        toolbar.add(createColorButton("", Color.BLACK, colorGroup));
+        toolbar.add(createColorButton("", Color.RED, colorGroup));
+        Color green = new Color(0,200,00); // because the 255 green is too bright
+        toolbar.add(createColorButton("", green, colorGroup));
+        toolbar.add(createColorButton("", Color.BLUE, colorGroup));
         toolbar.add(new JSeparator(SwingConstants.VERTICAL));
 
         // -- Shapes --
@@ -138,20 +141,54 @@ public class Mainframe extends JFrame {
         return menuBar;
     }
 
+    
+    
     // --- Helper: Create a Color Button ---
+    
     private JToggleButton createColorButton(String name, Color color, ButtonGroup group) {
     JToggleButton btn = new JToggleButton(name);
     btn.setBackground(color);
+    Dimension size = new Dimension(30, 30);
+    btn.setPreferredSize(size);
     btn.setForeground(Color.WHITE);
-    btn.addActionListener(e -> drawingPanel.setCurrentColor(color));
+
+    // changes in style that will make the button have an outline on selection
+        // changing defult style
+    btn.setContentAreaFilled(false);
+    btn.setOpaque(true);
+    btn.setFocusPainted(false);
+        // default border
+    btn.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        // talama 3mlna reset lel style lazm ne3ml el exclusive selection style bnfsna
+
+    // changing button border depending on action
+    btn.addActionListener(e -> {
+        drawingPanel.setCurrentColor(color);
+        
+        /* we will use something called enumeration --shabah el while-- that reads the number of objects created of this type
+        and iterates through it ..  */    
+        java.util.Enumeration<AbstractButton> btns = group.getElements();
+            // zy cursor by-Loop through all buttons in the group  
+        while (btns.hasMoreElements()) {
+        JToggleButton bt = (JToggleButton) btns.nextElement();
+            if (bt.isSelected()) {
+                bt.setBorder(BorderFactory.createLineBorder(Color.CYAN, 4));
+            } else {
+                bt.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+            }
+         }
+    
+        });
     group.add(btn); 
     return btn;
-}
+    }
+    
+    
 
     // --- Helper: Create a Shape Button ---
     private JToggleButton createShapeButton(String name, ShapeMode mode, ButtonGroup group) {
         JToggleButton btn = new JToggleButton(name);
-        btn.addActionListener(e -> drawingPanel.setCurrentMode(mode));
+        btn.addActionListener(e -> drawingPanel.setCurrentShapeMode(mode));
         group.add(btn); // Add to group so they toggle exclusively
         return btn;
     }
