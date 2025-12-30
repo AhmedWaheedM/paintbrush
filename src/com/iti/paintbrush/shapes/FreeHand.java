@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FreeHand extends Shape {
-    // has thickness 5 statically
     private List<int[]> points; // Arraylist of int arrays length 2 [x,y]
     
     public FreeHand(Color color, int thick, DrawMode drawMode) {
@@ -38,9 +37,7 @@ public class FreeHand extends Shape {
           */  
         
 
-
         // ersm lines ben l points badal ma trsm ovals kter gnb ba3d
-
         if (drawMode == DrawMode.DOTTED && points.size() >= 2){
             float[] dashPattern = {5f, 5f};  // 5 pixels on, 5 pixels off
             BasicStroke dashedStroke = new BasicStroke(
