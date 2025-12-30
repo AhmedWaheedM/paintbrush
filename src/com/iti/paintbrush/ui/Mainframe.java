@@ -1,5 +1,6 @@
 package com.iti.paintbrush.ui;
 
+import com.iti.paintbrush.enums.DrawMode;
 import com.iti.paintbrush.enums.ShapeMode;
 import java.awt.*;
 import javax.swing.*;
@@ -13,7 +14,7 @@ public class Mainframe extends JFrame {
     public Mainframe() {
         // 1. Frame Setup
         setTitle("Paint Brush - By ITI");
-        setSize(1250, 600);
+        setSize(1350, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         
@@ -33,49 +34,101 @@ public class Mainframe extends JFrame {
 
     // --- Helper: Build the Toolbar ---
     private JPanel createToolbar() {
-        JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        toolbar.setBackground(Color.LIGHT_GRAY);
+        JPanel toolbarContainer = new JPanel();
+        toolbarContainer.setLayout(new BoxLayout(toolbarContainer, BoxLayout.Y_AXIS));
+        toolbarContainer.setBackground(Color.LIGHT_GRAY);
 
-        // -- Colors --
-        toolbar.add(new JLabel("Colors: "));
-        ButtonGroup ColorGroup = new ButtonGroup(); // Ensures only one color is active
-        toolbar.add(createColorButton("Red", Color.RED, ColorGroup));
-        toolbar.add(createColorButton("Green", Color.GREEN, ColorGroup));
-        toolbar.add(createColorButton("Blue", Color.BLUE, ColorGroup));
-        toolbar.add(new JSeparator(SwingConstants.VERTICAL));
-
-        // -- Shapes --
-        toolbar.add(new JLabel("Shapes: "));
-        ButtonGroup shapeGroup = new ButtonGroup(); // Ensures only one shape is active
-        toolbar.add(createShapeButton(" Rect ", ShapeMode.RECTANGLE, shapeGroup));
-        toolbar.add(createShapeButton(" Oval ", ShapeMode.OVAL, shapeGroup));
-        toolbar.add(createShapeButton(" Line ", ShapeMode.LINE, shapeGroup));
-        toolbar.add(createShapeButton("Square", ShapeMode.SQUARE, shapeGroup));
-        toolbar.add(createShapeButton("Circle", ShapeMode.CIRCLE, shapeGroup));
-        toolbar.add(createShapeButton("Pencil", ShapeMode.FREE_HAND, shapeGroup));
-        toolbar.add(createShapeButton("Eraser", ShapeMode.ERASER, shapeGroup));
-        toolbar.add(new JSeparator(SwingConstants.VERTICAL));
-        toolbar.add(new JSeparator(SwingConstants.VERTICAL));
-        toolbar.add(new JSeparator(SwingConstants.VERTICAL));
-
+        // 1st row
         // -- Actions --
-        toolbar.add(new JLabel("Actions: "));
-        JButton btnClear = new JButton("Clear");
-        JButton btnReset = new JButton("Reset");
+        JPanel actionsRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        actionsRow.setBackground(Color.LIGHT_GRAY);
+        
+        actionsRow.add(new JLabel("Actions:"));
         JButton btnUndo = new JButton("Undo");
         JButton btnRedo = new JButton("Redo");
+        JButton btnClear = new JButton("Clear");
+        JButton btnReset = new JButton("Reset");
+
 
         btnClear.addActionListener(e -> drawingPanel.clearAll()); // Assuming you renamed ClearAll -> clearAll
         btnReset.addActionListener(e -> drawingPanel.reset());
         btnUndo.addActionListener(e -> drawingPanel.undo());
         btnRedo.addActionListener(e -> drawingPanel.redo());
 
-        toolbar.add(btnUndo);
-        toolbar.add(btnRedo);
-        toolbar.add(btnClear);
-        toolbar.add(btnReset);
 
-        return toolbar;
+        actionsRow.add(btnUndo);
+        actionsRow.add(btnRedo);
+        actionsRow.add(btnClear);
+        actionsRow.add(btnReset);
+
+
+        // 2nd row - tools
+        JPanel toolsRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        toolsRow.setBackground(Color.LIGHT_GRAY);
+
+        // -- Colors --
+        toolsRow.add(new JLabel("Colors: "));
+        ButtonGroup colorGroup = new ButtonGroup();
+        JToggleButton blackBtn = createColorButton("", Color.BLACK, colorGroup);
+        toolsRow.add(blackBtn);
+        blackBtn.setSelected(true);  // Default selection
+        blackBtn.setBorder(BorderFactory.createLineBorder(Color.CYAN, 4)); 
+        toolsRow.add(createColorButton("", Color.GRAY, colorGroup));
+        toolsRow.add(createColorButton("", Color.WHITE, colorGroup));
+        toolsRow.add(createColorButton("", Color.RED, colorGroup));
+        Color green = new Color(0,200,00);
+        toolsRow.add(createColorButton("", green, colorGroup));
+        toolsRow.add(createColorButton("", Color.YELLOW, colorGroup));
+        toolsRow.add(createColorButton("", Color.BLUE, colorGroup));
+        toolsRow.add(createColorButton("", Color.PINK, colorGroup));
+        toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
+        toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
+
+
+        // -- Shapes --
+        toolsRow.add(new JLabel("Shapes:"));
+        ButtonGroup shapeGroup = new ButtonGroup();
+        JToggleButton pencilBtn = createShapeButton("\u270E", "Pencil", ShapeMode.FREE_HAND, shapeGroup);
+        toolsRow.add(pencilBtn);
+        pencilBtn.setSelected(true); //default start
+        toolsRow.add(createShapeButton("\u2572", "Line", ShapeMode.LINE, shapeGroup));
+        toolsRow.add(createShapeButton("\u25AD", "Rectangle", ShapeMode.RECTANGLE, shapeGroup));
+        toolsRow.add(createShapeButton("\u25A1", "Square", ShapeMode.SQUARE, shapeGroup));
+        toolsRow.add(createShapeButton("\u2B2D", "Oval", ShapeMode.OVAL, shapeGroup));
+        toolsRow.add(createShapeButton("\u25CB", "Circle", ShapeMode.CIRCLE, shapeGroup));
+        toolsRow.add(createShapeButton("\u2327", "Eraser", ShapeMode.ERASER, shapeGroup));
+        toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
+        toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
+
+        // line type
+        // -- Draw Modes --
+        toolsRow.add(new JLabel("Mode:"));
+        ButtonGroup drawModeGroup = new ButtonGroup();
+        JToggleButton solidBtn = createDrawModeButton("Solid", DrawMode.SOLID, drawModeGroup);
+        toolsRow.add(solidBtn);
+        solidBtn.setSelected(true); //default
+
+        toolsRow.add(createDrawModeButton("Dotted", DrawMode.DOTTED, drawModeGroup));
+        toolsRow.add(createDrawModeButton("Fill", DrawMode.FILLED, drawModeGroup));
+        toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
+        toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
+
+        // -- Thickness Slider --
+        toolsRow.add(new JLabel("Thickness:"));
+        JSlider thicknessSlider = new JSlider(1, 11, 2);
+        thicknessSlider.setPreferredSize(new Dimension(100, 30));
+        thicknessSlider.setBackground(Color.LIGHT_GRAY);
+        thicknessSlider.addChangeListener(e -> drawingPanel.setCurrentThick(thicknessSlider.getValue()));
+        toolsRow.add(thicknessSlider);
+        toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
+
+
+        // 7ot both rows fl container
+        toolbarContainer.add(actionsRow);
+        toolbarContainer.add(toolsRow);
+        
+
+        return toolbarContainer;
     }
 
     // --- Helper: Build the Menu Bar ---
@@ -138,21 +191,66 @@ public class Mainframe extends JFrame {
         return menuBar;
     }
 
+    
+    
     // --- Helper: Create a Color Button ---
+    
     private JToggleButton createColorButton(String name, Color color, ButtonGroup group) {
     JToggleButton btn = new JToggleButton(name);
     btn.setBackground(color);
+    Dimension size = new Dimension(30, 30);
+    btn.setPreferredSize(size);
     btn.setForeground(Color.WHITE);
-    btn.addActionListener(e -> drawingPanel.setCurrentColor(color));
+
+    // changes in style that will make the button have an outline on selection
+        // changing defult style
+    btn.setContentAreaFilled(false);
+    btn.setOpaque(true);
+    btn.setFocusPainted(false);
+        // default border
+    btn.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        // talama 3mlna reset lel style lazm ne3ml el exclusive selection style bnfsna
+
+    // changing button border depending on action
+    btn.addActionListener(e -> {
+        drawingPanel.setCurrentColor(color);
+        
+        /* we will use something called enumeration --shabah el while-- that reads the number of objects created of this type
+        and iterates through it ..  */    
+        java.util.Enumeration<AbstractButton> btns = group.getElements();
+            // zy cursor by-Loop through all buttons in the group  
+        while (btns.hasMoreElements()) {
+        JToggleButton bt = (JToggleButton) btns.nextElement();
+            if (bt.isSelected()) {
+                bt.setBorder(BorderFactory.createLineBorder(Color.CYAN, 4));
+            } else {
+                bt.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+            }
+         }
+    
+        });
     group.add(btn); 
     return btn;
-}
+    }
+    
+    
 
     // --- Helper: Create a Shape Button ---
-    private JToggleButton createShapeButton(String name, ShapeMode mode, ButtonGroup group) {
-        JToggleButton btn = new JToggleButton(name);
-        btn.addActionListener(e -> drawingPanel.setCurrentMode(mode));
-        group.add(btn); // Add to group so they toggle exclusively
+    private JToggleButton createShapeButton(String unicode, String tooltip, ShapeMode mode, ButtonGroup group) {
+        JToggleButton btn = new JToggleButton(unicode);
+        btn.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 20)); // Unicode font
+        btn.setToolTipText(tooltip);
+        btn.addActionListener(e -> drawingPanel.setCurrentShapeMode(mode));
+        group.add(btn);
         return btn;
+    }
+
+    // --- Helper: create a line type button
+    // --- Helper: Create a Draw Mode Button ---
+    private JToggleButton createDrawModeButton(String name, DrawMode mode, ButtonGroup group) {
+    JToggleButton btn = new JToggleButton(name);
+    btn.addActionListener(e -> drawingPanel.setDrawMode(mode));
+    group.add(btn);
+    return btn;
     }
 }
