@@ -103,13 +103,41 @@ public class Mainframe extends JFrame {
         // line type
         // -- Draw Modes --
         toolsRow.add(new JLabel("Mode:"));
-        ButtonGroup drawModeGroup = new ButtonGroup();
-        JToggleButton solidBtn = createDrawModeButton("Solid", DrawMode.SOLID, drawModeGroup);
-        toolsRow.add(solidBtn);
-        solidBtn.setSelected(true); //default
-
-        toolsRow.add(createDrawModeButton("Dotted", DrawMode.DOTTED, drawModeGroup));
-        toolsRow.add(createDrawModeButton("Fill", DrawMode.FILLED, drawModeGroup));
+        
+        // Mutually exclusive checkboxes for Solid, Dotted, and Filled
+        JCheckBox solidCheckbox = new JCheckBox("Solid");
+        JCheckBox dottedCheckbox = new JCheckBox("Dotted");
+        JCheckBox filledCheckbox = new JCheckBox("Filled");
+        
+        solidCheckbox.setSelected(true); // default
+        
+        solidCheckbox.addItemListener(e -> {
+            if (solidCheckbox.isSelected()) {
+                dottedCheckbox.setSelected(false);
+                filledCheckbox.setSelected(false);
+                drawingPanel.setDrawMode(DrawMode.SOLID);
+            }
+        });
+        
+        dottedCheckbox.addItemListener(e -> {
+            if (dottedCheckbox.isSelected()) {
+                solidCheckbox.setSelected(false);
+                filledCheckbox.setSelected(false);
+                drawingPanel.setDrawMode(DrawMode.DOTTED);
+            }
+        });
+        
+        filledCheckbox.addItemListener(e -> {
+            if (filledCheckbox.isSelected()) {
+                solidCheckbox.setSelected(false);
+                dottedCheckbox.setSelected(false);
+                drawingPanel.setDrawMode(DrawMode.FILLED);
+            }
+        });
+        
+        toolsRow.add(solidCheckbox);
+        toolsRow.add(dottedCheckbox);
+        toolsRow.add(filledCheckbox);
         toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
         toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
 
