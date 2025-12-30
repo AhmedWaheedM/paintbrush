@@ -86,9 +86,7 @@ public class DrawingPanel extends JPanel {
         }
         else if(backupShapes!=null && !backupShapes.isEmpty()){
             shapes.addAll(backupShapes);
-            backgroundImage=backupImage;
             backupShapes=null;
-            backupImage=null;
             repaint();
         }
     }
