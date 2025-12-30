@@ -83,14 +83,17 @@ We moved from a simple prototype to a professionally architected application.
 ### Day 5: Architecture, UI and Shapes  (The "Bonus" Update)
 
 **- Arhcitecture**
-- **Colors:** now contains Black and white, new buttons actions
+- **Colors:** now contains Black and white, new buttons actions, 
+- **DrawMode:** added functionality for solid, dotted, filled
+- **Draw:** now using g2d not graphics g
+- **Thickness:** now allowing the user to change the line thickness
 
 **- UI**
 - **Colors** changed color buttons, Now the colors buttons have an outline when pressed instead of the regular color
+- **Shapes** shapes now using unicode symbols
+- **ThicknesS** added a slider for  thickness
 ---
 
-### TODO: (Next Steps for Day 4)
-- **[ ] UI Polish:** "El UI shaklo 3efesh." Improve the button layout, maybe add icons or a better color scheme.
+### TODO: 
 - **[ ] Testing:** Try to break the app and fix any small bugs found.
-- **[ ] Add dotted and solid:** add functionality of dotted and solid
-- **[ ] Styling:** Connect the "Filled" and "Dotted" checkboxes to the `draw()` logic in the Shape classes.
+

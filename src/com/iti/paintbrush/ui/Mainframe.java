@@ -88,17 +88,15 @@ public class Mainframe extends JFrame {
         // -- Shapes --
         toolsRow.add(new JLabel("Shapes:"));
         ButtonGroup shapeGroup = new ButtonGroup();
-        JToggleButton pencilBtn = createShapeButton("Pencil", ShapeMode.FREE_HAND, shapeGroup);
+        JToggleButton pencilBtn = createShapeButton("\u270E", "Pencil", ShapeMode.FREE_HAND, shapeGroup);
         toolsRow.add(pencilBtn);
         pencilBtn.setSelected(true); //default start
-        
-        toolsRow.add(createShapeButton("Rect", ShapeMode.RECTANGLE, shapeGroup));
-        toolsRow.add(createShapeButton("Square", ShapeMode.SQUARE, shapeGroup));
-        toolsRow.add(createShapeButton("Oval", ShapeMode.OVAL, shapeGroup));
-        toolsRow.add(createShapeButton("Circle", ShapeMode.CIRCLE, shapeGroup));
-        toolsRow.add(createShapeButton("Line", ShapeMode.LINE, shapeGroup));
-        toolsRow.add(new JLabel("Eraser:"));
-        toolsRow.add(createShapeButton("Erase", ShapeMode.ERASER, shapeGroup));
+        toolsRow.add(createShapeButton("\u2572", "Line", ShapeMode.LINE, shapeGroup));
+        toolsRow.add(createShapeButton("\u25AD", "Rectangle", ShapeMode.RECTANGLE, shapeGroup));
+        toolsRow.add(createShapeButton("\u25A1", "Square", ShapeMode.SQUARE, shapeGroup));
+        toolsRow.add(createShapeButton("\u2B2D", "Oval", ShapeMode.OVAL, shapeGroup));
+        toolsRow.add(createShapeButton("\u25CB", "Circle", ShapeMode.CIRCLE, shapeGroup));
+        toolsRow.add(createShapeButton("\u2327", "Eraser", ShapeMode.ERASER, shapeGroup));
         toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
         toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
 
@@ -110,13 +108,13 @@ public class Mainframe extends JFrame {
         toolsRow.add(solidBtn);
         solidBtn.setSelected(true); //default
 
-        toolsRow.add(createDrawModeButton("Dot", DrawMode.DOTTED, drawModeGroup));
+        toolsRow.add(createDrawModeButton("Dotted", DrawMode.DOTTED, drawModeGroup));
         toolsRow.add(createDrawModeButton("Fill", DrawMode.FILLED, drawModeGroup));
         toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
         toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
 
         // -- Thickness Slider --
-        toolsRow.add(new JLabel("Thick:"));
+        toolsRow.add(new JLabel("Thickness:"));
         JSlider thicknessSlider = new JSlider(1, 11, 2);
         thicknessSlider.setPreferredSize(new Dimension(100, 30));
         thicknessSlider.setBackground(Color.LIGHT_GRAY);
@@ -238,10 +236,12 @@ public class Mainframe extends JFrame {
     
 
     // --- Helper: Create a Shape Button ---
-    private JToggleButton createShapeButton(String name, ShapeMode mode, ButtonGroup group) {
-        JToggleButton btn = new JToggleButton(name);
+    private JToggleButton createShapeButton(String unicode, String tooltip, ShapeMode mode, ButtonGroup group) {
+        JToggleButton btn = new JToggleButton(unicode);
+        btn.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 20)); // Unicode font
+        btn.setToolTipText(tooltip);
         btn.addActionListener(e -> drawingPanel.setCurrentShapeMode(mode));
-        group.add(btn); // Add to group so they toggle exclusively
+        group.add(btn);
         return btn;
     }
 
