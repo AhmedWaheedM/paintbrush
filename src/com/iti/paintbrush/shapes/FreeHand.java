@@ -7,10 +7,9 @@ import java.util.List;
 public class FreeHand extends Shape {
     // has thickness 5 statically
     private List<int[]> points; // Arraylist of int arrays length 2 [x,y]
-    private int thickness = 3;
     
-    public FreeHand(Color color, DrawMode drawMode) {
-        super(0, 0, 0, 0, color, drawMode);
+    public FreeHand(Color color, int thick, DrawMode drawMode) {
+        super(0, 0, 0, 0, color, thick, drawMode);
         this.points = new ArrayList<>();
     }
     
@@ -25,6 +24,9 @@ public class FreeHand extends Shape {
         Graphics2D g2d = (Graphics2D) g;  // Cast to Graphics2D
         g2d.setColor(getColor());
         DrawMode drawMode = getDrawMode();
+
+        // added varying thickh stter
+        g2d.setStroke(new BasicStroke(getThick(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         
         // Draw each point as a small oval
         /* 
@@ -42,7 +44,7 @@ public class FreeHand extends Shape {
         if (drawMode == DrawMode.DOTTED && points.size() >= 2){
             float[] dashPattern = {5f, 5f};  // 5 pixels on, 5 pixels off
             BasicStroke dashedStroke = new BasicStroke(
-                1f,                // line width
+                getThick(),                // line width
                 BasicStroke.CAP_BUTT,    // end cap style
                 BasicStroke.JOIN_MITER,  // join style
                 10f,                     // miter limit
@@ -76,14 +78,6 @@ public class FreeHand extends Shape {
             }
         }   
 
-    }
-    
-    public int getThickness() {
-        return thickness;
-    }
-    
-    public void setThickness(int thickness) {
-        this.thickness = thickness;
     }
     
     public List<int[]> getPoints() {

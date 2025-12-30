@@ -34,59 +34,103 @@ public class Mainframe extends JFrame {
 
     // --- Helper: Build the Toolbar ---
     private JPanel createToolbar() {
-        JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        toolbar.setBackground(Color.LIGHT_GRAY);
+        JPanel toolbarContainer = new JPanel();
+        toolbarContainer.setLayout(new BoxLayout(toolbarContainer, BoxLayout.Y_AXIS));
+        toolbarContainer.setBackground(Color.LIGHT_GRAY);
 
-        // -- Colors --
-        toolbar.add(new JLabel("Color: "));
-        ButtonGroup colorGroup = new ButtonGroup(); // Ensures only one color is active
-        toolbar.add(createColorButton("", Color.WHITE, colorGroup));
-        toolbar.add(createColorButton("", Color.BLACK, colorGroup));
-        toolbar.add(createColorButton("", Color.RED, colorGroup));
-        Color green = new Color(0,200,00); // because the 255 green is too bright
-        toolbar.add(createColorButton("", green, colorGroup));
-        toolbar.add(createColorButton("", Color.BLUE, colorGroup));
-        toolbar.add(new JSeparator(SwingConstants.VERTICAL));
-
-        // -- Shapes --
-        toolbar.add(new JLabel("Shape:"));
-        ButtonGroup shapeGroup = new ButtonGroup(); // Ensures only one shape is active
-        toolbar.add(createShapeButton("Rect", ShapeMode.RECTANGLE, shapeGroup));
-        toolbar.add(createShapeButton("Square", ShapeMode.SQUARE, shapeGroup));
-        toolbar.add(createShapeButton("Oval", ShapeMode.OVAL, shapeGroup));
-        toolbar.add(createShapeButton("Circle", ShapeMode.CIRCLE, shapeGroup));
-        toolbar.add(createShapeButton("Line", ShapeMode.LINE, shapeGroup));
-        toolbar.add(createShapeButton("Pencil", ShapeMode.FREE_HAND, shapeGroup));
-        toolbar.add(createShapeButton("Erase", ShapeMode.ERASER, shapeGroup));
-        toolbar.add(new JSeparator(SwingConstants.VERTICAL));
-
-        // line type
-        // -- Draw Modes --
-        toolbar.add(new JLabel("Mode:"));
-        ButtonGroup drawModeGroup = new ButtonGroup();
-        toolbar.add(createDrawModeButton("Solid", DrawMode.SOLID, drawModeGroup));
-        toolbar.add(createDrawModeButton("Dot", DrawMode.DOTTED, drawModeGroup));
-        toolbar.add(createDrawModeButton("Fill", DrawMode.FILLED, drawModeGroup));
-        toolbar.add(new JSeparator(SwingConstants.VERTICAL));
-
+        // 1st row
         // -- Actions --
-        toolbar.add(new JLabel("Actions:"));
-        JButton btnClear = new JButton("Clear");
-        JButton btnReset = new JButton("Reset");
+        JPanel actionsRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        actionsRow.setBackground(Color.LIGHT_GRAY);
+        
+        actionsRow.add(new JLabel("Actions:"));
         JButton btnUndo = new JButton("Undo");
         JButton btnRedo = new JButton("Redo");
+        JButton btnClear = new JButton("Clear");
+        JButton btnReset = new JButton("Reset");
+
 
         btnClear.addActionListener(e -> drawingPanel.clearAll()); // Assuming you renamed ClearAll -> clearAll
         btnReset.addActionListener(e -> drawingPanel.reset());
         btnUndo.addActionListener(e -> drawingPanel.undo());
         btnRedo.addActionListener(e -> drawingPanel.redo());
 
-        toolbar.add(btnUndo);
-        toolbar.add(btnRedo);
-        toolbar.add(btnClear);
-        toolbar.add(btnReset);
 
-        return toolbar;
+        actionsRow.add(btnUndo);
+        actionsRow.add(btnRedo);
+        actionsRow.add(btnClear);
+        actionsRow.add(btnReset);
+
+
+        // 2nd row - tools
+        JPanel toolsRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        toolsRow.setBackground(Color.LIGHT_GRAY);
+
+        // -- Colors --
+        toolsRow.add(new JLabel("Colors: "));
+        ButtonGroup colorGroup = new ButtonGroup();
+        JToggleButton blackBtn = createColorButton("", Color.BLACK, colorGroup);
+        toolsRow.add(blackBtn);
+        blackBtn.setSelected(true);  // Default selection
+        blackBtn.setBorder(BorderFactory.createLineBorder(Color.CYAN, 4)); 
+        toolsRow.add(createColorButton("", Color.GRAY, colorGroup));
+        toolsRow.add(createColorButton("", Color.WHITE, colorGroup));
+        toolsRow.add(createColorButton("", Color.RED, colorGroup));
+        Color green = new Color(0,200,00);
+        toolsRow.add(createColorButton("", green, colorGroup));
+        toolsRow.add(createColorButton("", Color.YELLOW, colorGroup));
+        toolsRow.add(createColorButton("", Color.BLUE, colorGroup));
+        toolsRow.add(createColorButton("", Color.PINK, colorGroup));
+        toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
+        toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
+
+
+        // -- Shapes --
+        toolsRow.add(new JLabel("Shapes:"));
+        ButtonGroup shapeGroup = new ButtonGroup();
+        JToggleButton pencilBtn = createShapeButton("Pencil", ShapeMode.FREE_HAND, shapeGroup);
+        toolsRow.add(pencilBtn);
+        pencilBtn.setSelected(true); //default start
+        
+        toolsRow.add(createShapeButton("Rect", ShapeMode.RECTANGLE, shapeGroup));
+        toolsRow.add(createShapeButton("Square", ShapeMode.SQUARE, shapeGroup));
+        toolsRow.add(createShapeButton("Oval", ShapeMode.OVAL, shapeGroup));
+        toolsRow.add(createShapeButton("Circle", ShapeMode.CIRCLE, shapeGroup));
+        toolsRow.add(createShapeButton("Line", ShapeMode.LINE, shapeGroup));
+        toolsRow.add(new JLabel("Eraser:"));
+        toolsRow.add(createShapeButton("Erase", ShapeMode.ERASER, shapeGroup));
+        toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
+        toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
+
+        // line type
+        // -- Draw Modes --
+        toolsRow.add(new JLabel("Mode:"));
+        ButtonGroup drawModeGroup = new ButtonGroup();
+        JToggleButton solidBtn = createDrawModeButton("Solid", DrawMode.SOLID, drawModeGroup);
+        toolsRow.add(solidBtn);
+        solidBtn.setSelected(true); //default
+
+        toolsRow.add(createDrawModeButton("Dot", DrawMode.DOTTED, drawModeGroup));
+        toolsRow.add(createDrawModeButton("Fill", DrawMode.FILLED, drawModeGroup));
+        toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
+        toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
+
+        // -- Thickness Slider --
+        toolsRow.add(new JLabel("Thick:"));
+        JSlider thicknessSlider = new JSlider(1, 11, 2);
+        thicknessSlider.setPreferredSize(new Dimension(100, 30));
+        thicknessSlider.setBackground(Color.LIGHT_GRAY);
+        thicknessSlider.addChangeListener(e -> drawingPanel.setCurrentThick(thicknessSlider.getValue()));
+        toolsRow.add(thicknessSlider);
+        toolsRow.add(new JSeparator(SwingConstants.VERTICAL));
+
+
+        // 7ot both rows fl container
+        toolbarContainer.add(actionsRow);
+        toolbarContainer.add(toolsRow);
+        
+
+        return toolbarContainer;
     }
 
     // --- Helper: Build the Menu Bar ---

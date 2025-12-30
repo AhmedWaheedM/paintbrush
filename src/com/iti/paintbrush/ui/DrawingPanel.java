@@ -28,6 +28,7 @@ public class DrawingPanel extends JPanel {
     private ShapeMode currentShapeMode; // Using Enum now!
     private BufferedImage backgroundImage;
     private BufferedImage backupImage;
+    private int currentThick = 2;
 
     public DrawingPanel() {
         shapes = new ArrayList<>();
@@ -53,6 +54,10 @@ public class DrawingPanel extends JPanel {
 
     public void setDrawMode( DrawMode drawmode){
         this.currentDrawMode = drawmode;
+    }
+
+    public void setCurrentThick(int thick){
+        this.currentThick = thick;
     }
 
     // --- Action Methods ---
@@ -143,19 +148,19 @@ public class DrawingPanel extends JPanel {
         public void mousePressed(MouseEvent e) {
             if (currentShapeMode == ShapeMode.FREE_HAND) {
                 
-                currentShape = new FreeHand(currentColor,currentDrawMode);
+                currentShape = new FreeHand(currentColor,currentThick, currentDrawMode);
                 ((FreeHand) currentShape).addPoint(e.getX(), e.getY());
                 shapes.add(currentShape); // Add to shapes immediately
             }
             else if (currentShapeMode == ShapeMode.ERASER) {
                 
-                currentShape = new Eraser();
+                currentShape = new Eraser(currentThick);
                 ((Eraser) currentShape).addPoint(e.getX(), e.getY());
                 shapes.add(currentShape); // Add to shapes immediately
             } 
             else {
                 // Using the Factory Pattern for other shapes
-                currentShape = ShapeFactory.createShape(currentShapeMode, e.getX(), e.getY(), currentColor, currentDrawMode);
+                currentShape = ShapeFactory.createShape(currentShapeMode, e.getX(), e.getY(), currentColor, currentThick, currentDrawMode);
             }
         }
 
