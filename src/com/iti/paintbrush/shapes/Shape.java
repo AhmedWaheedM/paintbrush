@@ -2,8 +2,9 @@ package com.iti.paintbrush.shapes;
 
 import com.iti.paintbrush.interfaces.Drawable;
 import java.awt.*;
+import java.io.*;
 
-public abstract class Shape implements Drawable {
+public abstract class Shape implements Drawable, Serializable {
     private int x1,y1,x2,y2;
     private Color color;
     private boolean filled; //!TODO should add dotted later
