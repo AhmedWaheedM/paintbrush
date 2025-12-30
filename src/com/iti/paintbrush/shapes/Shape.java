@@ -1,5 +1,5 @@
 package com.iti.paintbrush.shapes;
-
+import com.iti.paintbrush.enums.DrawMode;
 import com.iti.paintbrush.interfaces.Drawable;
 import java.awt.*;
 import java.io.*;
@@ -7,14 +7,14 @@ import java.io.*;
 public abstract class Shape implements Drawable, Serializable {
     private int x1,y1,x2,y2;
     private Color color;
-    private boolean filled; //!TODO should add dotted later
-    public Shape(int x1, int y1, int x2, int y2, Color color) {
+    private DrawMode drawMode; 
+    public Shape(int x1, int y1, int x2, int y2, Color color, DrawMode drawMode) {
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
         this.y2 = y2;
         this.color = color;
-        this.filled = false;
+        this.drawMode = drawMode;
     }
 
     @Override
@@ -37,11 +37,11 @@ public abstract class Shape implements Drawable, Serializable {
     public Color getColor() {
         return color;
     }
-    public boolean isFilled() {
-        return filled;
+    public DrawMode getDrawMode() {
+        return drawMode;
     }
-    public void setFilled(boolean filled) {
-        this.filled = filled;
+    public void setDrawMode(DrawMode drawMode) {
+        this.drawMode = drawMode;
     }
     public void setColor(Color color) {
         this.color = color;

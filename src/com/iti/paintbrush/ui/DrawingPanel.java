@@ -143,7 +143,7 @@ public class DrawingPanel extends JPanel {
         public void mousePressed(MouseEvent e) {
             if (currentShapeMode == ShapeMode.FREE_HAND) {
                 
-                currentShape = new FreeHand(currentColor);
+                currentShape = new FreeHand(currentColor,currentDrawMode);
                 ((FreeHand) currentShape).addPoint(e.getX(), e.getY());
                 shapes.add(currentShape); // Add to shapes immediately
             }
@@ -155,7 +155,7 @@ public class DrawingPanel extends JPanel {
             } 
             else {
                 // Using the Factory Pattern for other shapes
-                currentShape = ShapeFactory.createShape(currentShapeMode, e.getX(), e.getY(), currentColor);
+                currentShape = ShapeFactory.createShape(currentShapeMode, e.getX(), e.getY(), currentColor, currentDrawMode);
             }
         }
 

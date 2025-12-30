@@ -1,5 +1,5 @@
 package com.iti.paintbrush.shapes;
-
+import com.iti.paintbrush.enums.DrawMode;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ public class Eraser extends Shape {
     private int thickness = 10;
     
     public Eraser() {
-        super(0, 0, 0, 0, Color.WHITE);
+        super(0, 0, 0, 0, Color.WHITE, DrawMode.SOLID);
         this.points = new ArrayList<>();
     }
     
@@ -22,10 +22,13 @@ public class Eraser extends Shape {
     
     @Override
     public void draw(Graphics g) {
-        if (points.isEmpty()) return;
-        
+        if (points.isEmpty()) return;      
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.WHITE);
 
-        g.setColor(Color.WHITE);
+        // DA 3SHAN YB2A VARYING THICKNESS
+        g2d.setStroke(new BasicStroke(thickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));  
+    
         
         // Draw each point as a small oval
          
@@ -46,10 +49,10 @@ public class Eraser extends Shape {
                 int y1 = point1[1];
                 int x2 = point2[0];
                 int y2 = point2[1];
-                g.drawLine(x1, y1, x2, y2);
+                g2d.drawLine(x1, y1, x2, y2); 
             }
+            g2d.setStroke(new BasicStroke()); 
         }
-
     }
     
     public int getThickness() {
